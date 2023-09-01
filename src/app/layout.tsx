@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { I18NContextProvider } from '@/i18n'
 import { ThemeRegistry } from '@/theme'
+import { Layout } from '@/components'
 
 export const metadata: Metadata = {
   title: 'Transcribe Wizard',
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en'>
       <body>
         <I18NContextProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <Layout>{children}</Layout>
+          </ThemeRegistry>
         </I18NContextProvider>
       </body>
     </html>
