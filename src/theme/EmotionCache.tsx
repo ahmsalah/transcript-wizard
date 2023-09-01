@@ -23,10 +23,12 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
   const [registry] = React.useState(() => {
     const cache = createCache(options)
     cache.compat = true
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- assertion
     const prevInsert = cache.insert
     let inserted: { name: string; isGlobal: boolean }[] = []
     cache.insert = (...args) => {
       const [selector, serialized] = args
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- assertion
       if (cache.inserted[serialized.name] === undefined) {
         inserted.push({
           name: serialized.name,

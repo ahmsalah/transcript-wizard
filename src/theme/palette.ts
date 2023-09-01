@@ -8,6 +8,8 @@
 
 import type { PaletteOptions } from '@mui/material/styles'
 
+/* eslint-disable @typescript-eslint/consistent-type-definitions 
+-- module augmentation must be in interface  */
 declare module '@mui/material/styles/createPalette' {
   interface TypeAction {
     disabledLight: string
@@ -28,6 +30,7 @@ declare module '@mui/material/styles/createPalette' {
     contrastText?: string
   }
 }
+/* eslint-enable @typescript-eslint/consistent-type-definitions */
 
 export const palette: PaletteOptions = {
   primary: {

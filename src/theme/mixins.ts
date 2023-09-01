@@ -5,12 +5,13 @@
 
 import type { MixinsOptions } from '@mui/material/styles/createMixins'
 
-type BoxShadow = {
-  light: string
-  dark: string
-}
-
+/* eslint-disable @typescript-eslint/consistent-type-definitions 
+-- module augmentation must be in interface  */
 declare module '@mui/material/styles/createMixins' {
+  type BoxShadow = {
+    light: string
+    dark: string
+  }
   interface Mixins {
     fixes: {
       translateY: (spacing?: number) => {
@@ -28,17 +29,22 @@ declare module '@mui/material/styles/createMixins' {
       }
     }
     keyframes: {
-      spin: Record<string, any>
-      pulse: Record<string, any>
-      pulsate: Record<string, any>
-      glow: Record<string, any>
-      sign: Record<string, any>
-      move: (keyframeName: string, startOffset: string, endOffset: string) => Record<string, any>
-      spinStart: Record<string, any>
-      spinEnd: Record<string, any>
+      spin: Record<string, unknown>
+      pulse: Record<string, unknown>
+      pulsate: Record<string, unknown>
+      glow: Record<string, unknown>
+      sign: Record<string, unknown>
+      move: (
+        keyframeName: string,
+        startOffset: string,
+        endOffset: string,
+      ) => Record<string, unknown>
+      spinStart: Record<string, unknown>
+      spinEnd: Record<string, unknown>
     }
   }
 }
+/* eslint-enable @typescript-eslint/consistent-type-definitions */
 
 export const mixins: MixinsOptions = {
   fixes: {

@@ -1,6 +1,6 @@
+import type { Metadata } from 'next'
 import { I18NContextProvider } from '@/i18n'
 import { ThemeRegistry } from '@/theme'
-import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Transcribe Wizard',
