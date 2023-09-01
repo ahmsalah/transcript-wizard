@@ -1,3 +1,4 @@
+import { I18NContextProvider } from '@/i18n'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body>{children}</body>
+      <body>
+        <I18NContextProvider>{children}</I18NContextProvider>
+      </body>
     </html>
   )
 }
