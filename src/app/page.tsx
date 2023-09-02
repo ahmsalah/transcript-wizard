@@ -1,12 +1,9 @@
-import { Utterances } from '@/components'
-import { getUtterances } from '@/http'
+import { Transcript } from '@/components'
 
-export default async function HomePage() {
-  const { results } = await getUtterances()
-
+export default function HomePage() {
   return (
     <main>
-      <Utterances utterances={results.utterances} />
+      <Transcript />
     </main>
   )
 }
