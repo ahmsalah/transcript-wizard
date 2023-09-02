@@ -1,1 +1,1 @@
-export * from './Utterances'
+export * from './UtteranceItem'

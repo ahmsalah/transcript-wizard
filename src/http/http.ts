@@ -76,11 +76,14 @@ class HTTP {
   }
 
   private handleError(error: unknown): Promise<never> {
-    // Log error to sentry or similar
+    // Log error to console or Sentry or similar
     if (error instanceof Error) {
-      throw new Error(`Request error: ${error.message}`)
+      console.error(`Request error: ${error.message}`)
+    } else {
+      console.error('Unknown request error')
     }
-    throw new Error('Unknown request error')
+
+    return Promise.reject(error)
   }
 }
 

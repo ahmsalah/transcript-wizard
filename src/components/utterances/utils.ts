@@ -1,7 +1,8 @@
 import type { FlexProps } from '../box'
 
 //a confidence value between 0.6-0.8 should be highlighted in yellow, and anything lower in red.
-export const getConfidenceProps = (confidence: number) => {
+export const getConfidenceProps = (confidence: number, isSelected: boolean) => {
+  let bgcolor = 'transparent'
   let color = 'text.primary'
   let fontWeight = '500'
   let sx: FlexProps['sx'] = {}
@@ -9,10 +10,13 @@ export const getConfidenceProps = (confidence: number) => {
   if (confidence <= 0.8) {
     color = 'warning.main'
     fontWeight = 'bold'
-    sx = {
-      '&:hover': {
-        backgroundColor: 'action.selected',
-      },
+    if (!isSelected) {
+      sx = {
+        cursor: 'pointer',
+        '&:hover': {
+          backgroundColor: 'action.selected',
+        },
+      }
     }
   }
 
@@ -20,5 +24,10 @@ export const getConfidenceProps = (confidence: number) => {
     color = 'error.dark'
   }
 
-  return { color, fontWeight, sx }
+  if (isSelected) {
+    bgcolor = color
+    color = 'common.white'
+  }
+
+  return { bgcolor, color, fontWeight, sx }
 }

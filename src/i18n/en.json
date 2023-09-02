@@ -1,3 +1,9 @@
 {
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "save": "Save",
+  "next": "Next",
+  "back": "Back",
+  "play": "Play",
+  "pause": "Pause",
+  "words_need_your_attention": "%{smart_count} word need your attention |||| %{smart_count} words need your attention"
 }
