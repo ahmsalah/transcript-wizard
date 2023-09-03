@@ -21,9 +21,13 @@ export type OnSaveWord = (params: OnSubmitWordParams) => void
 
 type UseTranscriptUtterancesParams = {
   utterancesBase: Utterance[]
+  setAudioTime: (timeInSeconds: number) => void
 }
 
-export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtterancesParams) => {
+export const useTranscriptUtterances = ({
+  utterancesBase,
+  setAudioTime,
+}: UseTranscriptUtterancesParams) => {
   const selectedWordRef = useRef<HTMLDivElement | null>(null)
   const [utterances, setUtterances] = useState(utterancesBase)
   const [isLoading, setIsLoading] = useState(true)
@@ -48,9 +52,13 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     void getUtterancesFromLocaleStorage()
   }, [getUtterancesFromLocaleStorage])
 
-  const onSelectWord: OnSelectWord = useCallback(({ utteranceIndex, wordIndex }) => {
-    setSelected({ utteranceIndex, wordIndex })
-  }, [])
+  const onSelectWord: OnSelectWord = useCallback(
+    ({ utteranceIndex, wordIndex }) => {
+      setSelected({ utteranceIndex, wordIndex })
+      setAudioTime(utterances[utteranceIndex]?.words[wordIndex].start - 1)
+    },
+    [setAudioTime, utterances],
+  )
 
   // Proceed to the next word with confidence <= 0.8 in the utterances array, and scroll it into view.
   const onProceed = useCallback(() => {
@@ -68,6 +76,7 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
 
           if (isNextWord) {
             setSelected({ wordIndex, utteranceIndex })
+            setAudioTime(utterances[utteranceIndex]?.words[wordIndex].start - 1)
 
             shouldBreak = true // Set the flag to break the outer loop
             break // Break the inner loop
@@ -80,7 +89,7 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     if (selectedWordRef.current) {
       selectedWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
-  }, [utterances, selected])
+  }, [utterances, selected, setAudioTime])
 
   // Replace word and update confidence to 1, update the state, and proceed to the next word with confidence <= 0.8.
   const onSaveWord: OnSaveWord = useCallback(
@@ -117,11 +126,17 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     return count
   }, [utterances])
 
+  const selectedWord = useMemo(
+    () => utterances[selected.utteranceIndex]?.words[selected.wordIndex],
+    [utterances, selected],
+  )
+
   return {
     onSelectWord,
     onSaveWord,
     onProceed,
     selected,
+    selectedWord,
     selectedWordRef,
     utterances,
     isLoading,

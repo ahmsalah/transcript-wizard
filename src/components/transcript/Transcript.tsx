@@ -1,6 +1,6 @@
 'use client'
 import type { FunctionComponent } from 'react'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { Fade } from '@mui/material'
 import { useTranscriptAudio, useTranscriptUtterances } from '@/hooks'
 import type { Utterance } from '@/types/Utterance'
@@ -15,24 +15,20 @@ type TranscriptProps = {
 
 export const Transcript: FunctionComponent<TranscriptProps> = memo(
   ({ utterances: utterancesBase }) => {
+    const { onToggleAudio, onPlayAtTime, isPlaying, audioRef, setAudioTime } = useTranscriptAudio()
     const {
       utterances,
       isLoading,
       onProceed,
       onSelectWord,
       selected,
+      selectedWord,
       selectedWordRef,
       onSaveWord,
       lowConfidenceWordsCount,
     } = useTranscriptUtterances({
       utterancesBase,
-    })
-    const selectedWord = useMemo(
-      () => utterances[selected.utteranceIndex]?.words[selected.wordIndex],
-      [utterances, selected],
-    )
-    const { onToggleAudio, onPlayAtTime, isPlaying, audioRef } = useTranscriptAudio({
-      selectedWord,
+      setAudioTime,
     })
 
     return (

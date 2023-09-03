@@ -1,14 +1,15 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Word } from '@/types/Word'
 
-type UseTranscriptAudioParams = {
-  selectedWord: Word
-}
-
-export const useTranscriptAudio = ({ selectedWord }: UseTranscriptAudioParams) => {
+export const useTranscriptAudio = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+
+  const setAudioTime = useCallback((timeInSeconds: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = timeInSeconds
+    }
+  }, [])
 
   const onPlayAtTime = useCallback(async (timeInSeconds: number) => {
     if (audioRef.current) {
@@ -50,17 +51,11 @@ export const useTranscriptAudio = ({ selectedWord }: UseTranscriptAudioParams) =
     }
   }, [])
 
-  useEffect(() => {
-    if (audioRef.current) {
-      // adjust audio time whenever the selected word changes
-      audioRef.current.currentTime = selectedWord.start - 1
-    }
-  }, [selectedWord])
-
   return {
     onToggleAudio,
     isPlaying,
     onPlayAtTime,
     audioRef,
+    setAudioTime,
   }
 }
