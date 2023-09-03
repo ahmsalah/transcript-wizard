@@ -125,13 +125,21 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
                     <OutlinedInput
                       {...field}
                       endAdornment={
-                        <Fade in={isDirty}>
-                          <Tooltip title={t('reset')}>
-                            <IconButton onClick={onReset} size='small'>
-                              <HistoryRounded />
+                        <>
+                          <Fade appear in={isDirty}>
+                            <Tooltip title={t('reset')}>
+                              <IconButton onClick={onReset} size='small'>
+                                <HistoryRounded />
+                              </IconButton>
+                            </Tooltip>
+                          </Fade>
+
+                          <Tooltip title={t('save')}>
+                            <IconButton onClick={handleSubmit(onSubmit)} size='small'>
+                              <CheckRounded />
                             </IconButton>
                           </Tooltip>
-                        </Fade>
+                        </>
                       }
                       fullWidth
                       sx={{ textAlign: 'center', width: 1 }}
