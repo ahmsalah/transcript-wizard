@@ -6,6 +6,8 @@ import {
   updatePunctuatedWord,
   getFromLocalStorageAsync,
   saveToLocalStorageAsync,
+  getNextLowConfidenceWord,
+  calculateLowConfidenceWordsCount,
 } from '@/utils'
 
 type OnSelectWordParams = {
@@ -14,10 +16,10 @@ type OnSelectWordParams = {
 }
 export type OnSelectWord = (params: OnSelectWordParams) => void
 
-type OnSubmitWordParams = OnSelectWordParams & {
+type OnSaveWordParams = OnSelectWordParams & {
   newWord: string
 }
-export type OnSaveWord = (params: OnSubmitWordParams) => void
+export type OnSaveWord = (params: OnSaveWordParams) => void
 
 type UseTranscriptUtterancesParams = {
   utterancesBase: Utterance[]
@@ -52,6 +54,22 @@ export const useTranscriptUtterances = ({
     void getUtterancesFromLocaleStorage()
   }, [getUtterancesFromLocaleStorage])
 
+  useEffect(() => {
+    if (!isLoading) {
+      // set initial selection
+      const nextLowConfidenceWord = getNextLowConfidenceWord({
+        selectedUtteranceIndex: 0,
+        selectedWordIndex: 0,
+        utterances,
+      })
+
+      if (nextLowConfidenceWord) {
+        setSelected(nextLowConfidenceWord)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- adding utterances will cause unnecessary updates
+  }, [isLoading])
+
   const onSelectWord: OnSelectWord = useCallback(
     ({ utteranceIndex, wordIndex }) => {
       setSelected({ utteranceIndex, wordIndex })
@@ -60,48 +78,31 @@ export const useTranscriptUtterances = ({
     [setAudioTime, utterances],
   )
 
-  // Proceed to the next word with confidence <= 0.8 in the utterances array, and scroll it into view.
+  // Proceed to the next word with confidence <= 0.8 in the utterances array, and set audio time to it
   const onProceed = useCallback(() => {
-    let shouldBreak = false
-    let utteranceIndex = 0
+    const nextLowConfidenceWord = getNextLowConfidenceWord({
+      selectedUtteranceIndex: selected.utteranceIndex,
+      selectedWordIndex: selected.wordIndex,
+      utterances,
+    })
 
-    for (const utterance of utterances) {
-      if (shouldBreak) break // Break if the condition was met in a previous utterance
-      let wordIndex = 0
-      for (const word of utterance.words) {
-        if (word.confidence <= 0.8) {
-          const isNextWord =
-            (utteranceIndex === selected.utteranceIndex && wordIndex > selected.wordIndex) ||
-            utteranceIndex > selected.utteranceIndex
-
-          if (isNextWord) {
-            setSelected({ wordIndex, utteranceIndex })
-            setAudioTime(utterances[utteranceIndex]?.words[wordIndex].start - 1)
-
-            shouldBreak = true // Set the flag to break the outer loop
-            break // Break the inner loop
-          }
-        }
-        wordIndex++
-      }
-      utteranceIndex++
-    }
-    if (selectedWordRef.current) {
-      selectedWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (nextLowConfidenceWord !== null) {
+      const { utteranceIndex, wordIndex } = nextLowConfidenceWord
+      setSelected({ wordIndex, utteranceIndex })
+      setAudioTime(utterances[utteranceIndex]?.words[wordIndex].start - 1)
     }
   }, [utterances, selected, setAudioTime])
 
   // Replace word and update confidence to 1, update the state, and proceed to the next word with confidence <= 0.8.
   const onSaveWord: OnSaveWord = useCallback(
     async ({ utteranceIndex, wordIndex, newWord }) => {
+      const oldPunctuatedWord = utterances[utteranceIndex].words[wordIndex].punctuated_word
+
       const newUtterances = replaceAtIndex(utterances, utteranceIndex, {
         words: replaceAtIndex(utterances[utteranceIndex].words, wordIndex, {
           confidence: 1,
           word: newWord,
-          punctuated_word: updatePunctuatedWord(
-            utterances[utteranceIndex].words[wordIndex].punctuated_word,
-            newWord,
-          ),
+          punctuated_word: updatePunctuatedWord(oldPunctuatedWord, newWord),
         }),
       })
       setUtterances(newUtterances)
@@ -112,24 +113,22 @@ export const useTranscriptUtterances = ({
   )
 
   // Calculate the count of words with confidence <= 0.8 in an array of Utterances.
-  const lowConfidenceWordsCount = useMemo(() => {
-    let count = 0
-
-    for (const utterance of utterances) {
-      for (const word of utterance.words) {
-        if (word.confidence <= 0.8) {
-          count++
-        }
-      }
-    }
-
-    return count
-  }, [utterances])
+  const lowConfidenceWordsCount = useMemo(
+    () => calculateLowConfidenceWordsCount(utterances),
+    [utterances],
+  )
 
   const selectedWord = useMemo(
     () => utterances[selected.utteranceIndex]?.words[selected.wordIndex],
     [utterances, selected],
   )
+
+  useEffect(() => {
+    if (selectedWordRef.current) {
+      // auto scroll to the selected word
+      selectedWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [selectedWord])
 
   return {
     onSelectWord,
