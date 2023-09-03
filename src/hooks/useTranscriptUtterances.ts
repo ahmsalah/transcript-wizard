@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Utterance } from '@/types/Utterance'
 import {
   replaceAtIndex,
@@ -17,15 +17,24 @@ export type OnSelectWord = (params: OnSelectWordParams) => void
 type OnSubmitWordParams = OnSelectWordParams & {
   newWord: string
 }
-export type OnSubmitWord = (params: OnSubmitWordParams) => void
+export type OnSaveWord = (params: OnSubmitWordParams) => void
 
 type UseTranscriptUtterancesParams = {
   utterancesBase: Utterance[]
 }
 
 export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtterancesParams) => {
+  const selectedWordRef = useRef<HTMLDivElement | null>(null)
   const [utterances, setUtterances] = useState(utterancesBase)
   const [isLoading, setIsLoading] = useState(true)
+  const [selected, setSelected] = useState<{
+    utteranceIndex: number
+    wordIndex: number
+  }>({
+    utteranceIndex: 0,
+    wordIndex: 0,
+  })
+
   const getUtterancesFromLocaleStorage = useCallback(async () => {
     const cachedUtterances = await getFromLocalStorageAsync<Utterance[]>('utterances')
 
@@ -39,19 +48,11 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     void getUtterancesFromLocaleStorage()
   }, [getUtterancesFromLocaleStorage])
 
-  const selectedWordRef = useRef<HTMLDivElement | null>(null)
-  const [selected, setSelected] = useState<{
-    utteranceIndex: number
-    wordIndex: number
-  }>({
-    utteranceIndex: 0,
-    wordIndex: 0,
-  })
-
   const onSelectWord: OnSelectWord = useCallback(({ utteranceIndex, wordIndex }) => {
     setSelected({ utteranceIndex, wordIndex })
   }, [])
 
+  // Proceed to the next word with confidence <= 0.8 in the utterances array, and scroll it into view.
   const onProceed = useCallback(() => {
     let shouldBreak = false
     let utteranceIndex = 0
@@ -81,7 +82,8 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     }
   }, [utterances, selected])
 
-  const onSubmitWord: OnSubmitWord = useCallback(
+  // Replace word and update confidence to 1, update the state, and proceed to the next word with confidence <= 0.8.
+  const onSaveWord: OnSaveWord = useCallback(
     async ({ utteranceIndex, wordIndex, newWord }) => {
       const newUtterances = replaceAtIndex(utterances, utteranceIndex, {
         words: replaceAtIndex(utterances[utteranceIndex].words, wordIndex, {
@@ -100,13 +102,29 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     [utterances, onProceed],
   )
 
+  // Calculate the count of words with confidence <= 0.8 in an array of Utterances.
+  const lowConfidenceWordsCount = useMemo(() => {
+    let count = 0
+
+    for (const utterance of utterances) {
+      for (const word of utterance.words) {
+        if (word.confidence <= 0.8) {
+          count++
+        }
+      }
+    }
+
+    return count
+  }, [utterances])
+
   return {
     onSelectWord,
-    onSubmitWord,
+    onSaveWord,
     onProceed,
     selected,
     selectedWordRef,
     utterances,
     isLoading,
+    lowConfidenceWordsCount,
   }
 }

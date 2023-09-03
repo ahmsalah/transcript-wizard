@@ -23,7 +23,7 @@ import {
 } from '@mui/icons-material'
 import { Controller, useForm } from 'react-hook-form'
 import { useI18n } from '@/i18n'
-import type { OnSubmitWord } from '@/hooks'
+import type { OnSaveWord } from '@/hooks'
 import { Flex } from '../box'
 
 type WizardProps = {
@@ -33,7 +33,8 @@ type WizardProps = {
   isPlaying: boolean
   selectedUtteranceIndex: number
   selectedWordIndex: number
-  onSubmitWord: OnSubmitWord
+  onSaveWord: OnSaveWord
+  lowConfidenceWordsCount: number
 }
 
 type WizardFormType = {
@@ -46,9 +47,10 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
     onProceed,
     onToggleAudio,
     isPlaying,
-    onSubmitWord,
+    onSaveWord,
     selectedUtteranceIndex,
     selectedWordIndex,
+    lowConfidenceWordsCount,
   }) => {
     const { t } = useI18n()
     const [collapseIn, setCollapseIn] = useState(false)
@@ -73,13 +75,13 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
 
     const onSubmit = useCallback(
       ({ value }: WizardFormType) => {
-        onSubmitWord({
+        onSaveWord({
           newWord: value,
           utteranceIndex: selectedUtteranceIndex,
           wordIndex: selectedWordIndex,
         })
       },
-      [onSubmitWord, selectedUtteranceIndex, selectedWordIndex],
+      [onSaveWord, selectedUtteranceIndex, selectedWordIndex],
     )
 
     useEffect(() => {
@@ -107,7 +109,9 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
           <form noValidate onSubmit={handleSubmit(onSubmit)}>
             <Flex alignCenter column gap={4} height={1}>
               <BoltRounded sx={{ fontSize: '4rem', mb: -2 }} />
-              <Typography>{t('words_need_your_attention', { smart_count: 222 })}</Typography>
+              <Typography>
+                {t('words_need_your_attention', { smart_count: lowConfidenceWordsCount })}
+              </Typography>
 
               <Typography fontWeight='bold' variant='h4'>
                 {selectedWord}

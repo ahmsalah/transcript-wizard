@@ -28,7 +28,7 @@ export const useTranscriptAudio = ({ selectedWord }: UseTranscriptAudioParams) =
   }, [])
 
   useEffect(() => {
-    // used to update the isPlaying state, for the wizard play/pause button
+    // used for updating the isPlaying state, which controls the play/pause button in the wizard interface
     const audioElement = audioRef.current
     const handlePlay = () => {
       setIsPlaying(true)
@@ -52,6 +52,7 @@ export const useTranscriptAudio = ({ selectedWord }: UseTranscriptAudioParams) =
 
   useEffect(() => {
     if (audioRef.current) {
+      // adjust audio time whenever the selected word changes
       audioRef.current.currentTime = selectedWord.start - 1
     }
   }, [selectedWord])

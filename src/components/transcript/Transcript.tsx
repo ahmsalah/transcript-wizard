@@ -22,7 +22,8 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
       onSelectWord,
       selected,
       selectedWordRef,
-      onSubmitWord,
+      onSaveWord,
+      lowConfidenceWordsCount,
     } = useTranscriptUtterances({
       utterancesBase,
     })
@@ -38,8 +39,9 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
       <Flex column>
         <Wizard
           isPlaying={isPlaying}
+          lowConfidenceWordsCount={lowConfidenceWordsCount}
           onProceed={onProceed}
-          onSubmitWord={onSubmitWord}
+          onSaveWord={onSaveWord}
           onToggleAudio={onToggleAudio}
           selectedUtteranceIndex={selected.utteranceIndex}
           selectedWord={selectedWord.word}
