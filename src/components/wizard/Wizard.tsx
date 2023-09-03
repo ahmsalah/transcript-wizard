@@ -1,11 +1,14 @@
 'use client'
-import { Button, Input, Paper, Typography } from '@mui/material'
+import { Button, Fade, IconButton, OutlinedInput, Paper, Tooltip, Typography } from '@mui/material'
 import type { FunctionComponent } from 'react'
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
 import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
+import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
 import { Controller, useForm } from 'react-hook-form'
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded'
 import { useI18n } from '@/i18n'
 import { Flex } from '../box'
 
@@ -24,16 +27,35 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
   ({ selectedWord, onProceed, onToggleAudio, isPlaying }) => {
     const { t } = useI18n()
 
-    const { handleSubmit, control } = useForm<WizardFormType>({
+    const {
+      handleSubmit,
+      control,
+      reset,
+
+      formState: { isDirty },
+    } = useForm<WizardFormType>({
       mode: 'onChange',
+
       defaultValues: {
         value: selectedWord,
       },
     })
 
-    const onSubmit = useCallback(({ value }: WizardFormType) => {
-      console.log(value)
-    }, [])
+    const onReset = useCallback(() => {
+      reset({ value: selectedWord })
+    }, [selectedWord])
+
+    const onSubmit = useCallback(
+      ({ value }: WizardFormType) => {
+        console.log(value)
+        onProceed()
+      },
+      [onProceed],
+    )
+
+    useEffect(() => {
+      onReset()
+    }, [onReset])
 
     return (
       <Paper
@@ -41,50 +63,70 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
           position: 'fixed',
           right: '5%',
           top: '40%',
-          width: 300,
-          height: 260,
-          p: 3,
+          py: 3,
+          px: 4,
+          minWidth: { md: 400 },
         }}
       >
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-          <Flex alignCenter column gap={3} height={1}>
+          <Flex alignCenter column gap={4} height={1}>
+            <BoltRoundedIcon sx={{ fontSize: '4rem', mb: -2 }} />
             <Typography>{t('words_need_your_attention', { smart_count: 222 })}</Typography>
 
-            <Flex gap={2}>
-              <Typography fontWeight='bold' variant='h4'>
-                {selectedWord}
-              </Typography>
-              <Button type='submit'>{t('save')}</Button>
-            </Flex>
+            <Typography fontWeight='bold' variant='h4'>
+              {selectedWord}
+            </Typography>
 
             <Controller
               control={control}
               name='value'
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  // id=''
+              render={({ field }) => (
+                <OutlinedInput
+                  {...field}
+                  endAdornment={
+                    <Fade in={isDirty}>
+                      <Tooltip title={t('reset')}>
+                        <IconButton onClick={onReset} size='small'>
+                          <HistoryRoundedIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Fade>
+                  }
                   fullWidth
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  sx={{ mb: 3 }}
-                  value={value}
+                  sx={{ textAlign: 'center', width: 1 }}
                 />
               )}
             />
-
-            <Flex gap={2} mt='auto'>
+            <Flex gap={2} mt={1}>
               <Button
                 endIcon={
                   isPlaying ? <PauseCircleOutlineRoundedIcon /> : <PlayCircleOutlineRoundedIcon />
                 }
                 onClick={onToggleAudio}
+                size='large'
                 variant='outlined'
               >
                 {t(isPlaying ? 'pause' : 'play')}
               </Button>
-              <Button endIcon={<ChevronRightRoundedIcon />} onClick={onProceed} variant='contained'>
-                {t('next')}
-              </Button>
+              {isDirty ? (
+                <Button
+                  endIcon={<CheckRoundedIcon />}
+                  size='large'
+                  type='submit'
+                  variant='contained'
+                >
+                  {t('save')}
+                </Button>
+              ) : (
+                <Button
+                  endIcon={<ChevronRightRoundedIcon />}
+                  onClick={onProceed}
+                  size='large'
+                  variant='contained'
+                >
+                  {t('next')}
+                </Button>
+              )}
             </Flex>
           </Flex>
         </form>
