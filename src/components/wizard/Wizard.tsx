@@ -38,7 +38,15 @@ type WizardFormType = {
 }
 
 export const Wizard: FunctionComponent<WizardProps> = memo(
-  ({ selectedWord, onProceed, onToggleAudio, isPlaying }) => {
+  ({
+    selectedWord,
+    onProceed,
+    onToggleAudio,
+    isPlaying,
+    onSubmitWord,
+    selectedUtteranceIndex,
+    selectedWordIndex,
+  }) => {
     const { t } = useI18n()
 
     const {
@@ -62,9 +70,14 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
     const onSubmit = useCallback(
       ({ value }: WizardFormType) => {
         console.log(value)
-        onProceed()
+        // onProceed()
+        onSubmitWord({
+          newWord: value,
+          utteranceIndex: selectedUtteranceIndex,
+          wordIndex: selectedWordIndex,
+        })
       },
-      [onProceed],
+      [onSubmitWord, selectedUtteranceIndex, selectedWordIndex],
     )
 
     useEffect(() => {

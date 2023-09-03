@@ -2,14 +2,14 @@
 import type { FunctionComponent } from 'react'
 import { memo, useMemo } from 'react'
 import { useTranscriptAudio, useTranscriptUtterances } from '@/hooks'
-import type { UtterancesMap } from '@/types/UtterancesMap'
+import type { Utterance } from '@/types/Utterance'
 import { Flex } from '../box'
 import { AudioPlayer } from '../audioPlayer'
 import { Wizard } from '../wizard'
 import { UtteranceItem } from '../utterances'
 
 type TranscriptProps = {
-  utterances: UtterancesMap
+  utterances: Utterance[]
 }
 
 export const Transcript: FunctionComponent<TranscriptProps> = memo(({ utterances }) => {
@@ -18,7 +18,7 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(({ utterances
       utterances,
     })
   const selectedWord = useMemo(
-    () => Array.from(utterances.values())[selected.utteranceIndex]?.words[selected.wordIndex],
+    () => utterances[selected.utteranceIndex]?.words[selected.wordIndex],
     [utterances, selected],
   )
   const { onToggleAudio, onPlayAtTime, isPlaying, audioRef } = useTranscriptAudio({ selectedWord })
@@ -36,7 +36,7 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(({ utterances
       />
 
       <Flex column gap={2}>
-        {Array.from(utterances.values()).map((utterance, index) => (
+        {utterances.map((utterance, index) => (
           <UtteranceItem
             key={utterance.id}
             {...utterance}

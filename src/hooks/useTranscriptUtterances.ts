@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useRef, useState } from 'react'
-import type { UtterancesMap } from '@/types/UtterancesMap'
+import type { Utterance } from '@/types/Utterance'
 
 type OnSelectWordParams = {
   utteranceIndex: number
@@ -14,7 +14,7 @@ type OnSubmitWordParams = OnSelectWordParams & {
 export type OnSubmitWord = (params: OnSubmitWordParams) => void
 
 type UseTranscriptUtterancesParams = {
-  utterances: UtterancesMap
+  utterances: Utterance[]
 }
 
 export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesParams) => {
@@ -35,7 +35,7 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
     let shouldBreak = false
     let utteranceIndex = 0
 
-    for (const [_, utterance] of utterances) {
+    for (const utterance of utterances) {
       if (shouldBreak) break // Break if the condition was met in a previous utterance
       let wordIndex = 0
       for (const word of utterance.words) {
@@ -62,6 +62,17 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
 
   const onSubmitWord: OnSubmitWord = useCallback(({ utteranceIndex, wordIndex, newWord }) => {
     console.log('onSubmitWord', utteranceIndex, wordIndex, newWord)
+
+    // if (
+    //   utteranceIndex === currentUtteranceIndex &&
+    //   wordIndex === currentWordIndex
+    // ) {
+    //   if (currentWord === newWord) {
+    //     onProceed()
+    //   } else {
+    //     console.log('try again!')
+    //   }
+    // }
   }, [])
 
   return {
