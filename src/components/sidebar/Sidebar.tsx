@@ -71,7 +71,7 @@ const tabStyles: SxProps<Theme> = {
 }
 
 export const Sidebar: FunctionComponent = memo(() => {
-  const isUp900 = useMediaQuery('(min-width:900px)')
+  const matches = useMediaQuery('(max-width:900px)')
   const { t } = useI18n()
 
   return (
@@ -87,14 +87,14 @@ export const Sidebar: FunctionComponent = memo(() => {
         }}
       >
         <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
-          {isUp900 ? (
+          {matches ? (
+            'TW'
+          ) : (
             <>
               Transcript
               <br />
               Wizard
             </>
-          ) : (
-            'TW'
           )}
         </Typography>
       </Flex>

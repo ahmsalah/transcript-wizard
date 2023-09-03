@@ -36,6 +36,7 @@ type WizardProps = {
   selectedWordIndex: number
   onSaveWord: OnSaveWord
   lowConfidenceWordsCount: number
+  isTranscriptLoading: boolean
 }
 
 type WizardFormType = {
@@ -52,6 +53,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
     selectedUtteranceIndex,
     selectedWordIndex,
     lowConfidenceWordsCount,
+    isTranscriptLoading,
   }) => {
     const { t } = useI18n()
     const [collapseIn, setCollapseIn] = useState(false)
@@ -88,10 +90,12 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
     }, [onReset])
 
     useEffect(() => {
-      setTimeout(() => {
-        setCollapseIn(true)
-      }, 2000)
-    }, [])
+      if (!isTranscriptLoading) {
+        setTimeout(() => {
+          setCollapseIn(true)
+        }, 2000)
+      }
+    }, [isTranscriptLoading])
 
     return (
       <Zoom appear in={collapseIn} timeout={600}>

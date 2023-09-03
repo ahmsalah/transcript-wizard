@@ -49,7 +49,11 @@ export const useTranscriptUtterances = ({
     if (cachedUtterances) {
       setUtterances(cachedUtterances)
     }
-    setIsLoading(false)
+
+    setTimeout(() => {
+      setIsLoading(false)
+      // Simulate server latency
+    }, 4000)
   }, [])
 
   useEffect(() => {
@@ -60,8 +64,8 @@ export const useTranscriptUtterances = ({
     if (!isLoading) {
       // set initial selection
       const nextLowConfidenceWord = getNextLowConfidenceWord({
-        selectedUtteranceIndex: 0,
-        selectedWordIndex: 0,
+        selectedUtteranceIndex: -1,
+        selectedWordIndex: -1,
         utterances,
       })
 

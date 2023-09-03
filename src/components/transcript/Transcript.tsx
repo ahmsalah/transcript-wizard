@@ -8,6 +8,7 @@ import { Flex } from '../box'
 import { AudioPlayer } from '../audioPlayer'
 import { Wizard } from '../wizard'
 import { UtteranceItem } from '../utterances'
+import { Splash } from '../splash'
 
 type TranscriptProps = {
   utterances: Utterance[]
@@ -32,9 +33,12 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
     })
 
     return (
-      <Flex column>
+      <Flex column position='relative'>
+        {isLoading ? <Splash /> : null}
+
         <Wizard
           isPlaying={isPlaying}
+          isTranscriptLoading={isLoading}
           lowConfidenceWordsCount={lowConfidenceWordsCount}
           onProceed={onProceed}
           onSaveWord={onSaveWord}
