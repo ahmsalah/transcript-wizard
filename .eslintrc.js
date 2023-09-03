@@ -50,5 +50,6 @@ module.exports = {
     ],
     'eslint-comments/require-description': ['error', { ignore: ['eslint-enable'] }],
     'import/no-extraneous-dependencies': ['error', { packageDir: './' }],
+    'no-implicit-coercion': ['error', { allow: ['!!', '~'] }],
   },
 }
