@@ -5,16 +5,19 @@ export const getConfidenceProps = (confidence: number, isSelected: boolean) => {
   let bgcolor = 'transparent'
   let color = 'text.primary'
   let fontWeight = '500'
-  let sx: FlexProps['sx'] = {}
+  let sx: FlexProps['sx'] = {
+    transition: 'background-color 150ms',
+  }
 
   if (confidence <= 0.8) {
     color = 'warning.main'
     fontWeight = 'bold'
     if (!isSelected) {
       sx = {
+        ...sx,
         cursor: 'pointer',
         '&:hover': {
-          backgroundColor: 'action.selected',
+          bgcolor: 'action.selected',
         },
       }
     }

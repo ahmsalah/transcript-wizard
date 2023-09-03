@@ -1,9 +1,9 @@
 'use client'
 import { forwardRef, memo } from 'react'
-import { Button, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import type { Utterance } from '@/types/Utterance'
 import { formatTime } from '@/utils'
-import { Flex } from '../box'
+import { Flex, FlexButton } from '../box'
 import { getConfidenceProps } from './utils'
 
 type UtteranceItemProps = Utterance & {
@@ -29,33 +29,25 @@ export const UtteranceItem = memo(
       ref,
     ) => {
       return (
-        <Flex gap={2}>
-          <Button
-            disableTouchRipple
-            onClick={() => {
-              onPlayAtTime(start)
-            }}
-            sx={{ alignItems: 'flex-start' }}
-          >
+        <FlexButton
+          borderRadius={1}
+          disableTouchRipple
+          gap={2}
+          maxWidth={680}
+          onClick={() => {
+            onPlayAtTime(start)
+          }}
+          sx={{
+            transition: 'background-color 150ms',
+            '&:hover, &:focus': {
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
+          <Typography fontWeight='bold' p={1.5}>
             <span>{formatTime(start)}</span>
-          </Button>
-          <Flex
-            borderRadius={1}
-            component='p'
-            flex={1}
-            inline
-            maxWidth={500}
-            my={0}
-            p={1}
-            sx={{
-              transition: 'background-color 150ms',
-              '&:hover': {
-                backgroundColor: 'action.hover',
-                cursor: 'text',
-              },
-            }}
-            wrap
-          >
+          </Typography>
+          <Flex component='p' flex={1} inline my={0} p={1} wrap>
             {words.map(({ punctuated_word: word, confidence }, index) => {
               const isSelected =
                 selectedWordIndex === index && selectedUtteranceIndex === utteranceIndex
@@ -66,8 +58,9 @@ export const UtteranceItem = memo(
                   key={index.toString()}
                   p={0.25}
                   {...getConfidenceProps(confidence, isSelected)}
-                  onClick={() => {
+                  onClick={(event) => {
                     if (confidence <= 0.8) {
+                      event.stopPropagation()
                       onSelectWord(utteranceIndex, index)
                     }
                   }}
@@ -78,7 +71,7 @@ export const UtteranceItem = memo(
               )
             })}
           </Flex>
-        </Flex>
+        </FlexButton>
       )
     },
   ),
