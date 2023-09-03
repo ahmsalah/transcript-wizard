@@ -1,5 +1,15 @@
 'use client'
-import { Button, Fade, IconButton, OutlinedInput, Paper, Tooltip, Typography } from '@mui/material'
+import {
+  Button,
+  Fade,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  OutlinedInput,
+  Paper,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import type { FunctionComponent } from 'react'
 import { memo, useCallback, useEffect } from 'react'
 import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
@@ -81,20 +91,25 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
               control={control}
               name='value'
               render={({ field }) => (
-                <OutlinedInput
-                  {...field}
-                  endAdornment={
-                    <Fade in={isDirty}>
-                      <Tooltip title={t('reset')}>
-                        <IconButton onClick={onReset} size='small'>
-                          <HistoryRoundedIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Fade>
-                  }
-                  fullWidth
-                  sx={{ textAlign: 'center', width: 1 }}
-                />
+                <FormControl>
+                  <OutlinedInput
+                    {...field}
+                    endAdornment={
+                      <Fade in={isDirty}>
+                        <Tooltip title={t('reset')}>
+                          <IconButton onClick={onReset} size='small'>
+                            <HistoryRoundedIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Fade>
+                    }
+                    fullWidth
+                    sx={{ textAlign: 'center', width: 1 }}
+                  />
+                  <FormHelperText id='my-helper-text'>
+                    {t('press_enter_key_to_save')}
+                  </FormHelperText>
+                </FormControl>
               )}
             />
             <Flex gap={2} mt={1}>
