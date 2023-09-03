@@ -71,8 +71,6 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
 
     const onSubmit = useCallback(
       ({ value }: WizardFormType) => {
-        console.log(value)
-        // onProceed()
         onSubmitWord({
           newWord: value,
           utteranceIndex: selectedUtteranceIndex,

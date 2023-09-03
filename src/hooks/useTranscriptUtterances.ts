@@ -1,6 +1,12 @@
 'use client'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Utterance } from '@/types/Utterance'
+import {
+  getFromLocalStorage,
+  replaceAtIndex,
+  saveToLocalStorage,
+  updatePunctuatedWord,
+} from '@/utils'
 
 type OnSelectWordParams = {
   utteranceIndex: number
@@ -14,10 +20,20 @@ type OnSubmitWordParams = OnSelectWordParams & {
 export type OnSubmitWord = (params: OnSubmitWordParams) => void
 
 type UseTranscriptUtterancesParams = {
-  utterances: Utterance[]
+  utterancesBase: Utterance[]
 }
 
-export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesParams) => {
+export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtterancesParams) => {
+  const [utterances, setUtterances] = useState(utterancesBase)
+
+  useEffect(() => {
+    const cachedUtterances = getFromLocalStorage<Utterance[]>('utterances')
+
+    if (cachedUtterances) {
+      setUtterances(cachedUtterances)
+    }
+  }, [])
+
   const selectedWordRef = useRef<HTMLDivElement | null>(null)
   const [selected, setSelected] = useState<{
     utteranceIndex: number
@@ -60,20 +76,24 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
     }
   }, [utterances, selected])
 
-  const onSubmitWord: OnSubmitWord = useCallback(({ utteranceIndex, wordIndex, newWord }) => {
-    console.log('onSubmitWord', utteranceIndex, wordIndex, newWord)
-
-    // if (
-    //   utteranceIndex === currentUtteranceIndex &&
-    //   wordIndex === currentWordIndex
-    // ) {
-    //   if (currentWord === newWord) {
-    //     onProceed()
-    //   } else {
-    //     console.log('try again!')
-    //   }
-    // }
-  }, [])
+  const onSubmitWord: OnSubmitWord = useCallback(
+    ({ utteranceIndex, wordIndex, newWord }) => {
+      const newUtterances = replaceAtIndex(utterances, utteranceIndex, {
+        words: replaceAtIndex(utterances[utteranceIndex].words, wordIndex, {
+          confidence: 1,
+          word: newWord,
+          punctuated_word: updatePunctuatedWord(
+            utterances[utteranceIndex].words[wordIndex].punctuated_word,
+            newWord,
+          ),
+        }),
+      })
+      setUtterances(newUtterances)
+      saveToLocalStorage('utterances', newUtterances)
+      onProceed()
+    },
+    [utterances, onProceed],
+  )
 
   return {
     onSelectWord,
@@ -81,5 +101,6 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
     onProceed,
     selected,
     selectedWordRef,
+    utterances,
   }
 }
