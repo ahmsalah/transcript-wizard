@@ -1,6 +1,7 @@
 'use client'
 import type { FunctionComponent } from 'react'
 import { memo, useMemo } from 'react'
+import { Fade } from '@mui/material'
 import { useTranscriptAudio, useTranscriptUtterances } from '@/hooks'
 import type { Utterance } from '@/types/Utterance'
 import { Flex } from '../box'
@@ -14,10 +15,17 @@ type TranscriptProps = {
 
 export const Transcript: FunctionComponent<TranscriptProps> = memo(
   ({ utterances: utterancesBase }) => {
-    const { utterances, onProceed, onSelectWord, selected, selectedWordRef, onSubmitWord } =
-      useTranscriptUtterances({
-        utterancesBase,
-      })
+    const {
+      utterances,
+      isLoading,
+      onProceed,
+      onSelectWord,
+      selected,
+      selectedWordRef,
+      onSubmitWord,
+    } = useTranscriptUtterances({
+      utterancesBase,
+    })
     const selectedWord = useMemo(
       () => utterances[selected.utteranceIndex]?.words[selected.wordIndex],
       [utterances, selected],
@@ -38,20 +46,22 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
           selectedWordIndex={selected.wordIndex}
         />
 
-        <Flex column gap={2}>
-          {utterances.map((utterance, index) => (
-            <UtteranceItem
-              key={utterance.id}
-              {...utterance}
-              onPlayAtTime={onPlayAtTime}
-              onSelectWord={onSelectWord}
-              ref={selectedWordRef}
-              selectedUtteranceIndex={selected.utteranceIndex}
-              selectedWordIndex={selected.wordIndex}
-              utteranceIndex={index}
-            />
-          ))}
-        </Flex>
+        <Fade in={!isLoading} timeout={500}>
+          <Flex column gap={2}>
+            {utterances.map((utterance, index) => (
+              <UtteranceItem
+                key={utterance.id}
+                {...utterance}
+                onPlayAtTime={onPlayAtTime}
+                onSelectWord={onSelectWord}
+                ref={selectedWordRef}
+                selectedUtteranceIndex={selected.utteranceIndex}
+                selectedWordIndex={selected.wordIndex}
+                utteranceIndex={index}
+              />
+            ))}
+          </Flex>
+        </Fade>
         <AudioPlayer
           ref={audioRef}
           src='https://wondercraft-podcast-assets.s3.eu-west-1.amazonaws.com/doac_17_08_trimmed.mp3'

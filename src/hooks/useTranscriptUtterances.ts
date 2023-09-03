@@ -2,10 +2,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Utterance } from '@/types/Utterance'
 import {
-  getFromLocalStorage,
   replaceAtIndex,
-  saveToLocalStorage,
   updatePunctuatedWord,
+  getFromLocalStorageAsync,
+  saveToLocalStorageAsync,
 } from '@/utils'
 
 type OnSelectWordParams = {
@@ -25,14 +25,19 @@ type UseTranscriptUtterancesParams = {
 
 export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtterancesParams) => {
   const [utterances, setUtterances] = useState(utterancesBase)
-
-  useEffect(() => {
-    const cachedUtterances = getFromLocalStorage<Utterance[]>('utterances')
+  const [isLoading, setIsLoading] = useState(true)
+  const getUtterancesFromLocaleStorage = useCallback(async () => {
+    const cachedUtterances = await getFromLocalStorageAsync<Utterance[]>('utterances')
 
     if (cachedUtterances) {
       setUtterances(cachedUtterances)
     }
+    setIsLoading(false)
   }, [])
+
+  useEffect(() => {
+    void getUtterancesFromLocaleStorage()
+  }, [getUtterancesFromLocaleStorage])
 
   const selectedWordRef = useRef<HTMLDivElement | null>(null)
   const [selected, setSelected] = useState<{
@@ -77,7 +82,7 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
   }, [utterances, selected])
 
   const onSubmitWord: OnSubmitWord = useCallback(
-    ({ utteranceIndex, wordIndex, newWord }) => {
+    async ({ utteranceIndex, wordIndex, newWord }) => {
       const newUtterances = replaceAtIndex(utterances, utteranceIndex, {
         words: replaceAtIndex(utterances[utteranceIndex].words, wordIndex, {
           confidence: 1,
@@ -89,7 +94,7 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
         }),
       })
       setUtterances(newUtterances)
-      saveToLocalStorage('utterances', newUtterances)
+      await saveToLocalStorageAsync('utterances', newUtterances)
       onProceed()
     },
     [utterances, onProceed],
@@ -102,5 +107,6 @@ export const useTranscriptUtterances = ({ utterancesBase }: UseTranscriptUtteran
     selected,
     selectedWordRef,
     utterances,
+    isLoading,
   }
 }
