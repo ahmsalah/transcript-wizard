@@ -86,8 +86,16 @@ export const Sidebar: FunctionComponent = memo(() => {
           px: { xs: 1, md: 2 },
         }}
       >
-        <Typography fontWeight='bold' variant='h5'>
-          {isUp900 ? 'TranscriptWizard' : 'TW'}
+        <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
+          {isUp900 ? (
+            <>
+              Transcript
+              <br />
+              Wizard
+            </>
+          ) : (
+            'TW'
+          )}
         </Typography>
       </Flex>
       <Tabs
