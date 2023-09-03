@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useMediaQuery } from '@mui/material'
 import type { Utterance } from '@/types/Utterance'
 import {
   replaceAtIndex,
@@ -30,6 +31,7 @@ export const useTranscriptUtterances = ({
   utterancesBase,
   setAudioTime,
 }: UseTranscriptUtterancesParams) => {
+  const isUp900 = useMediaQuery('(min-width:900px)')
   const selectedWordRef = useRef<HTMLDivElement | null>(null)
   const [utterances, setUtterances] = useState(utterancesBase)
   const [isLoading, setIsLoading] = useState(true)
@@ -126,9 +128,12 @@ export const useTranscriptUtterances = ({
   useEffect(() => {
     if (selectedWordRef.current) {
       // auto scroll to the selected word
-      selectedWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      selectedWordRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: isUp900 ? 'center' : 'start',
+      })
     }
-  }, [selectedWord])
+  }, [selectedWord, isUp900])
 
   return {
     onSelectWord,

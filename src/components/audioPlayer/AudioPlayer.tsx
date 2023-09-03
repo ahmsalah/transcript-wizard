@@ -3,6 +3,7 @@ import { Box } from '@mui/material'
 import { forwardRef, memo } from 'react'
 import type { FlexProps } from '../box'
 import { Flex } from '../box'
+import { drawerWidthMd, drawerWidthSm } from '../sidebar'
 
 type AudioPlayerProps = FlexProps & {
   src: string
@@ -16,12 +17,13 @@ export const AudioPlayer = memo(
         <Box height={120} />
         <Flex
           alignCenter
-          bgcolor='primary.main'
+          bgcolor='common.white'
           bottom={0}
-          left={0}
+          boxShadow="'0px -1px 1px 0px rgba(0, 0, 0, 0.10)'"
+          left={{ xs: 0, sm: drawerWidthSm - 1, md: drawerWidthMd - 2 }}
           p={3}
           position='fixed'
-          width={1}
+          right={0}
           {...props}
         >
           <Box component='audio' controls ref={ref} width={1} {...audioProps}>

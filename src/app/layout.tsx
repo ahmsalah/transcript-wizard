@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <I18NContextProvider>
           <ThemeRegistry>
-            <Layout>{children}</Layout>
+            <Layout withSidebar>{children}</Layout>
           </ThemeRegistry>
         </I18NContextProvider>
       </body>

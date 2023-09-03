@@ -7,5 +7,11 @@
   "play": "Play",
   "pause": "Pause",
   "words_need_your_attention": "%{smart_count} word need your attention |||| %{smart_count} words need your attention",
-  "press_enter_key_to_save": "Press Enter key to save"
+  "press_enter_key_to_save": "Press Enter key to save",
+  "notifications": "Notifications",
+  "podcasts": "Podcasts",
+  "audio": "Audio",
+  "transcriptions": "Transcriptions",
+  "media": "Media",
+  "profile": "Profile"
 }

@@ -33,8 +33,7 @@ export const UtteranceItem = memo(
         <FlexButton
           borderRadius={1}
           disableTouchRipple
-          gap={2}
-          maxWidth={680}
+          maxWidth={{ md: 500, lg: 600, xl: 680 }}
           onClick={() => {
             onPlayAtTime(start)
           }}
