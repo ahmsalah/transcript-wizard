@@ -53,7 +53,7 @@ export const useTranscriptUtterances = ({
     setTimeout(() => {
       setIsLoading(false)
       // Simulate server latency
-    }, 4000)
+    }, 3000)
   }, [])
 
   useEffect(() => {
