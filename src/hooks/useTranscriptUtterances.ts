@@ -2,6 +2,17 @@
 import { useCallback, useRef, useState } from 'react'
 import type { UtterancesMap } from '@/types/UtterancesMap'
 
+type OnSelectWordParams = {
+  utteranceIndex: number
+  wordIndex: number
+}
+export type OnSelectWord = (params: OnSelectWordParams) => void
+
+type OnSubmitWordParams = OnSelectWordParams & {
+  newWord: string
+}
+export type OnSubmitWord = (params: OnSubmitWordParams) => void
+
 type UseTranscriptUtterancesParams = {
   utterances: UtterancesMap
 }
@@ -16,7 +27,7 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
     wordIndex: 0,
   })
 
-  const onSelectWord = useCallback((utteranceIndex: number, wordIndex: number) => {
+  const onSelectWord: OnSelectWord = useCallback(({ utteranceIndex, wordIndex }) => {
     setSelected({ utteranceIndex, wordIndex })
   }, [])
 
@@ -49,8 +60,13 @@ export const useTranscriptUtterances = ({ utterances }: UseTranscriptUtterancesP
     }
   }, [utterances, selected])
 
+  const onSubmitWord: OnSubmitWord = useCallback(({ utteranceIndex, wordIndex, newWord }) => {
+    console.log('onSubmitWord', utteranceIndex, wordIndex, newWord)
+  }, [])
+
   return {
     onSelectWord,
+    onSubmitWord,
     onProceed,
     selected,
     selectedWordRef,

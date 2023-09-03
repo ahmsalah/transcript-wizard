@@ -20,6 +20,7 @@ import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
 import { Controller, useForm } from 'react-hook-form'
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded'
 import { useI18n } from '@/i18n'
+import type { OnSubmitWord } from '@/hooks'
 import { Flex } from '../box'
 
 type WizardProps = {
@@ -27,6 +28,9 @@ type WizardProps = {
   onToggleAudio: () => void
   selectedWord: string
   isPlaying: boolean
+  selectedUtteranceIndex: number
+  selectedWordIndex: number
+  onSubmitWord: OnSubmitWord
 }
 
 type WizardFormType = {
@@ -53,7 +57,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
 
     const onReset = useCallback(() => {
       reset({ value: selectedWord })
-    }, [selectedWord])
+    }, [selectedWord, reset])
 
     const onSubmit = useCallback(
       ({ value }: WizardFormType) => {

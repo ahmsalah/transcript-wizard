@@ -3,6 +3,7 @@ import { forwardRef, memo } from 'react'
 import { Typography } from '@mui/material'
 import type { Utterance } from '@/types/Utterance'
 import { formatTime } from '@/utils'
+import type { OnSelectWord } from '@/hooks'
 import { Flex, FlexButton } from '../box'
 import { getConfidenceProps } from './utils'
 
@@ -11,7 +12,7 @@ type UtteranceItemProps = Utterance & {
   utteranceIndex: number
   selectedUtteranceIndex: number
   selectedWordIndex: number
-  onSelectWord: (utteranceIndex: number, wordIndex: number) => void
+  onSelectWord: OnSelectWord
 }
 
 export const UtteranceItem = memo(
@@ -48,20 +49,20 @@ export const UtteranceItem = memo(
             <span>{formatTime(start)}</span>
           </Typography>
           <Flex component='p' flex={1} inline my={0} p={1} wrap>
-            {words.map(({ punctuated_word: word, confidence }, index) => {
+            {words.map(({ punctuated_word: word, confidence }, wordIndex) => {
               const isSelected =
-                selectedWordIndex === index && selectedUtteranceIndex === utteranceIndex
+                selectedWordIndex === wordIndex && selectedUtteranceIndex === utteranceIndex
               return (
                 <Typography
                   borderRadius={1}
                   component='span'
-                  key={index.toString()}
+                  key={wordIndex.toString()}
                   p={0.25}
                   {...getConfidenceProps(confidence, isSelected)}
                   onClick={(event) => {
                     if (confidence <= 0.8) {
                       event.stopPropagation()
-                      onSelectWord(utteranceIndex, index)
+                      onSelectWord({ utteranceIndex, wordIndex })
                     }
                   }}
                   ref={isSelected ? ref : undefined}
