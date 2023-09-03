@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   modularizeImports: {
@@ -7,7 +11,10 @@ const nextConfig = {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },
+    'lodash-es': {
+      transform: 'lodash-es/{{member}}',
+    },
   },
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

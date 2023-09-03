@@ -12,13 +12,15 @@ import {
 } from '@mui/material'
 import type { FunctionComponent } from 'react'
 import { memo, useCallback, useEffect } from 'react'
-import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
-import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
+import {
+  PlayCircleOutlineRounded,
+  PauseCircleOutlineRounded,
+  ChevronRightRounded,
+  CheckRounded,
+  HistoryRounded,
+  BoltRounded,
+} from '@mui/icons-material'
 import { Controller, useForm } from 'react-hook-form'
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded'
 import { useI18n } from '@/i18n'
 import type { OnSubmitWord } from '@/hooks'
 import { Flex } from '../box'
@@ -97,7 +99,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
       >
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Flex alignCenter column gap={4} height={1}>
-            <BoltRoundedIcon sx={{ fontSize: '4rem', mb: -2 }} />
+            <BoltRounded sx={{ fontSize: '4rem', mb: -2 }} />
             <Typography>{t('words_need_your_attention', { smart_count: 222 })}</Typography>
 
             <Typography fontWeight='bold' variant='h4'>
@@ -115,7 +117,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
                       <Fade in={isDirty}>
                         <Tooltip title={t('reset')}>
                           <IconButton onClick={onReset} size='small'>
-                            <HistoryRoundedIcon />
+                            <HistoryRounded />
                           </IconButton>
                         </Tooltip>
                       </Fade>
@@ -131,9 +133,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
             />
             <Flex gap={2} mt={1}>
               <Button
-                endIcon={
-                  isPlaying ? <PauseCircleOutlineRoundedIcon /> : <PlayCircleOutlineRoundedIcon />
-                }
+                endIcon={isPlaying ? <PauseCircleOutlineRounded /> : <PlayCircleOutlineRounded />}
                 onClick={onToggleAudio}
                 size='large'
                 variant='outlined'
@@ -141,17 +141,12 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
                 {t(isPlaying ? 'pause' : 'play')}
               </Button>
               {isDirty ? (
-                <Button
-                  endIcon={<CheckRoundedIcon />}
-                  size='large'
-                  type='submit'
-                  variant='contained'
-                >
+                <Button endIcon={<CheckRounded />} size='large' type='submit' variant='contained'>
                   {t('save')}
                 </Button>
               ) : (
                 <Button
-                  endIcon={<ChevronRightRoundedIcon />}
+                  endIcon={<ChevronRightRounded />}
                   onClick={onProceed}
                   size='large'
                   variant='contained'
