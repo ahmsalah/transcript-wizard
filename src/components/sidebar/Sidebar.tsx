@@ -4,7 +4,9 @@ import { memo } from 'react'
 import type { Theme, SxProps } from '@mui/material'
 import { Drawer, Tabs, Tab, Badge, useMediaQuery, Avatar, Typography } from '@mui/material'
 import { Notification as NotificationIcon } from 'iconsax-react'
+import Image from 'next/image'
 import { useI18n } from '@/i18n'
+import logo from '@/assets/images/logo.png'
 import { Flex, FlexButton } from '../box'
 import { Icon } from '../icon'
 import { SidebarItem } from './SidebarItem'
@@ -78,6 +80,7 @@ export const Sidebar: FunctionComponent = memo(() => {
     <Drawer sx={drawerStyles} variant='permanent'>
       <Flex
         alignCenter
+        column
         gap={2}
         justifyCenter
         sx={{
@@ -86,6 +89,7 @@ export const Sidebar: FunctionComponent = memo(() => {
           px: { xs: 1, md: 2 },
         }}
       >
+        <Image alt='logo' height={38} src={logo} />
         <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
           {matches ? (
             'TW'

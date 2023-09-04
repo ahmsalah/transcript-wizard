@@ -4,9 +4,9 @@ import { ThemeRegistry } from '@/theme'
 import { Layout } from '@/components'
 
 export const metadata: Metadata = {
-  title: 'Transcribe Wizard',
+  title: 'Transcript Wizard',
   description:
-    'Transcribe Wizard is a platform that identifies uncertain words or phrases in audio transcriptions, highlights them, and provides an intuitive user interface for correction.',
+    'Transcript Wizard is a platform that identifies uncertain words or phrases in audio transcriptions, highlights them, and provides an intuitive user interface for correction.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
