@@ -1,8 +1,9 @@
 'use client'
 import type { FunctionComponent, PropsWithChildren } from 'react'
-import { createContext, useState, useMemo, useContext } from 'react'
+import { createContext, useState, useMemo, useContext, useEffect } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { getFromLocalStorage, saveToLocalStorage } from '@/utils'
 import NextAppDirEmotionCacheProvider from './EmotionCache'
 import { getTheme } from './theme'
 
@@ -16,13 +17,27 @@ export const useToggleThemeContext = () => {
   return useContext(ToggleThemeContext)
 }
 
+type PaletteMode = 'light' | 'dark'
+
 export const ThemeRegistry: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>('light')
+  const [mode, setMode] = useState<PaletteMode>('light')
+
+  useEffect(() => {
+    const cachedColorMode = getFromLocalStorage<PaletteMode>('palette-color-mode')
+    if (cachedColorMode) {
+      setMode(cachedColorMode)
+    }
+  }, [])
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
+        setMode((prevMode) => {
+          const newMode = prevMode === 'light' ? 'dark' : 'light'
+
+          saveToLocalStorage('palette-color-mode', newMode)
+          return newMode
+        })
       },
     }),
     [],

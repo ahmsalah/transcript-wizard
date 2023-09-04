@@ -1,1 +1,1 @@
-export type LocalStorageKey = 'utterances'
+export type LocalStorageKey = 'palette-color-mode' | 'utterances'
