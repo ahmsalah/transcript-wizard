@@ -1,34 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Transcript Wizard
 
-## Getting Started
+[![Coverage Status](https://img.shields.io/badge/Code%20Coverage-Report-blue)](https://coveralls.io/github/ahmsalah/transcript-wizard?branch=main)
 
-First, run the development server:
+## Live Demo
+
+Try out the app through [this link](https://transcript-wizard.vercel.app/).
+
+## Description
+
+Transcript Wizard is a platform that identifies uncertain words in audio transcriptions, highlights them, and provides an intuitive user interface for correction.
+
+## Technologies Used
+
+- TypeScript
+- Next.js 13 with App router
+- Emotion for styling
+- MUI
+- Jest for testing
+
+## Installation
+
+Make sure you have Node.js and Yarn installed, then run the following commands:
 
 ```bash
-npm run dev
-# or
+# Clone the repository
+git clone https://github.com/yourusername/transcript-wizard.git
+
+# Navigate into the project directory
+cd transcript-wizard
+
+# Install dependencies
+yarn install
+```
+
+## Running Locally
+
+```bash
+# Start the development server
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running Tests
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Run unit tests with Jest:
 
-## Learn More
+```bash
+# Run tests in watch mode
+yarn test
 
-To learn more about Next.js, take a look at the following resources:
+# Generate test coverage report
+yarn test:coverage
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `yarn dev` - Starts development server at [http://localhost:3000](http://localhost:3000).
+- `yarn build` - Builds application for production.
+- `yarn test` - Runs Jest in watch mode.
+- `yarn test:ci` - Runs tests in CI mode.
+- `yarn test:coverage` - Generates code coverage report.
+- `yarn coveralls` - Sends coverage report to Coveralls. Requires `COVERALLS_REPO_TOKEN`.
+- `yarn start` - Starts production server. Requires prior `yarn build`.
+- `yarn lint` - Executes ESLint.
+- `yarn tsc` - Performs TypeScript type checking.
+- `yarn format` - Formats code with Prettier.
+- `yarn prepare` - Installs Husky Git hooks to set up pre-commit and pre-push hooks.
+- `yarn analyze` - Analyzes bundle sizes.
