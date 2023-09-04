@@ -11,9 +11,6 @@ const nextConfig = {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },
-    'lodash-es': {
-      transform: 'lodash-es/{{member}}',
-    },
   },
 }
 

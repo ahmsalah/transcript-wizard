@@ -1,4 +1,5 @@
-import { cloneDeep, fill } from 'lodash-es'
+import cloneDeep from 'lodash/cloneDeep'
+import fill from 'lodash/fill'
 
 /**
  * Replace a value at a specific index in an array (Immutable).

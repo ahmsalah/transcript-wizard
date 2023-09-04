@@ -23,7 +23,7 @@
     "@mui/material": "^5.14.6",
     "babel-jest": "^29.6.4",
     "iconsax-react": "^0.0.8",
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
     "next": "13.4.19",
     "node-polyglot": "^2.5.0",
