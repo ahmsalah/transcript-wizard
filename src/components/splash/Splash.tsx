@@ -2,7 +2,9 @@
 import { memo, forwardRef } from 'react'
 import Lottie from 'lottie-react'
 import { Box } from '@mui/material'
-import lottieLogo from '@/assets/lotties/audio-waves.json'
+import { useTheme } from '@mui/material/styles'
+import audioWavesWhite from '@/assets/lotties/audio-waves-white.json'
+import audioWavesBlack from '@/assets/lotties/audio-waves-black.json'
 import type { FlexProps } from '../box'
 import { Flex } from '../box'
 
@@ -12,6 +14,8 @@ type SplashProps = FlexProps & {
 
 export const Splash = memo(
   forwardRef<HTMLDivElement, SplashProps>(({ onComplete, ...props }, ref) => {
+    const theme = useTheme()
+
     return (
       <Flex
         alignCenter
@@ -26,7 +30,7 @@ export const Splash = memo(
       >
         <Box sx={{ width: 160 }}>
           <Lottie
-            animationData={lottieLogo}
+            animationData={theme.palette.mode === 'light' ? audioWavesBlack : audioWavesWhite}
             autoplay
             loop
             onComplete={onComplete}

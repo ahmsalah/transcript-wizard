@@ -26,6 +26,9 @@ export const getPalette = (mode: 'light' | 'dark'): PaletteOptions =>
           main: '#FFFFFF',
         },
         secondary: { main: '#14b8a6' },
+        background: {
+          default: 'rgb(16, 14, 19)',
+        },
       }
     : {
         mode,

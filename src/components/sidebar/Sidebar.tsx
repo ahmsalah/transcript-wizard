@@ -2,7 +2,7 @@
 import type { FunctionComponent } from 'react'
 import { memo } from 'react'
 import type { Theme, SxProps } from '@mui/material'
-import { Drawer, Tabs, Tab, Badge, useMediaQuery, Avatar, Typography, Fade } from '@mui/material'
+import { Drawer, Tabs, Tab, Badge, useMediaQuery, Avatar, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { Moon, Notification as NotificationIcon, Sun1 } from 'iconsax-react'
 import Image from 'next/image'
@@ -82,43 +82,41 @@ export const Sidebar: FunctionComponent = memo(() => {
 
   return (
     <Drawer sx={drawerStyles} variant='permanent'>
-      <Fade appear in>
-        <Flex
-          alignCenter
-          column
-          gap={2}
-          justifyCenter
-          sx={{
-            pt: 4,
-            pb: 3.5,
-            px: { xs: 1, md: 2 },
+      <Flex
+        alignCenter
+        column
+        gap={2}
+        justifyCenter
+        sx={{
+          pt: 4,
+          pb: 3.5,
+          px: { xs: 1, md: 2 },
+        }}
+      >
+        <Image
+          alt='logo'
+          height={38}
+          src={logo}
+          style={{
+            filter: theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : undefined,
           }}
+        />
+        <Typography
+          fontFamily={nothingYouCouldDoFont.style.fontFamily}
+          fontWeight='bold'
+          variant='h3'
         >
-          <Image
-            alt='logo'
-            height={38}
-            src={logo}
-            style={{
-              filter: theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : undefined,
-            }}
-          />
-          <Typography
-            fontFamily={nothingYouCouldDoFont.style.fontFamily}
-            fontWeight='bold'
-            variant='h3'
-          >
-            {matches ? (
-              'TW'
-            ) : (
-              <>
-                Transcript
-                <br />
-                Wizard
-              </>
-            )}
-          </Typography>
-        </Flex>
-      </Fade>
+          {matches ? (
+            'TW'
+          ) : (
+            <>
+              Transcript
+              <br />
+              Wizard
+            </>
+          )}
+        </Typography>
+      </Flex>
 
       <Tabs
         aria-label='tabs'
