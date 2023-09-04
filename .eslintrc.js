@@ -14,6 +14,7 @@ module.exports = {
     '@vercel/style-guide/eslint/react',
     '@vercel/style-guide/eslint/next',
   ].map(require.resolve),
+  plugins: ['jest'],
   parserOptions: {
     project,
   },
@@ -24,6 +25,7 @@ module.exports = {
   env: {
     node: true,
     commonjs: true,
+    'jest/globals': true,
   },
   settings: {
     'import/resolver': {

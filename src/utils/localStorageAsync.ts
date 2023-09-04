@@ -15,7 +15,9 @@ export function saveToLocalStorageAsync<T>(key: LocalStorageKey, data: T): Promi
       resolve()
     } catch (error) {
       // Handle errors, e.g., local storage is full or data cannot be serialized
-      console.error('Error saving to local storage:', error)
+      if (process.env.NODE_ENV !== 'test') {
+        console.error('Error saving to local storage:', error)
+      }
       reject(error)
     }
   })
@@ -39,7 +41,9 @@ export function getFromLocalStorageAsync<T>(key: LocalStorageKey): Promise<T | n
       }
     } catch (error) {
       // Handle errors, e.g., data cannot be deserialized
-      console.error('Error retrieving from local storage:', error)
+      if (process.env.NODE_ENV !== 'test') {
+        console.error('Error retrieving from local storage:', error)
+      }
       reject(error)
     }
   })

@@ -12,7 +12,9 @@ export function saveToLocalStorage<T>(key: LocalStorageKey, data: T): void {
     localStorage.setItem(key, serializedData)
   } catch (error) {
     // Handle errors, e.g., local storage is full or data cannot be serialized
-    console.error('Error saving to local storage:', error)
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('Error saving to local storage:', error)
+    }
   }
 }
 
@@ -30,7 +32,9 @@ export function getFromLocalStorage<T>(key: LocalStorageKey): T | null {
     }
   } catch (error) {
     // Handle errors, e.g., data cannot be deserialized
-    console.error('Error retrieving from local storage:', error)
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('Error retrieving from local storage:', error)
+    }
   }
 
   return null // Key not found or error occurred
