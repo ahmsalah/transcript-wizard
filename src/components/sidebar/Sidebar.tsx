@@ -2,11 +2,13 @@
 import type { FunctionComponent } from 'react'
 import { memo } from 'react'
 import type { Theme, SxProps } from '@mui/material'
-import { Drawer, Tabs, Tab, Badge, useMediaQuery, Avatar, Typography } from '@mui/material'
-import { Notification as NotificationIcon } from 'iconsax-react'
+import { Drawer, Tabs, Tab, Badge, useMediaQuery, Avatar, Typography, Fade } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Moon, Notification as NotificationIcon, Sun1 } from 'iconsax-react'
 import Image from 'next/image'
 import { useI18n } from '@/i18n'
 import logo from '@/assets/images/logo.png'
+import { useToggleThemeContext } from '@/theme'
 import { Flex, FlexButton } from '../box'
 import { Icon } from '../icon'
 import { SidebarItem } from './SidebarItem'
@@ -75,33 +77,45 @@ const tabStyles: SxProps<Theme> = {
 export const Sidebar: FunctionComponent = memo(() => {
   const matches = useMediaQuery('(max-width:900px)')
   const { t } = useI18n()
+  const theme = useTheme()
+  const { toggleColorMode } = useToggleThemeContext()
 
   return (
     <Drawer sx={drawerStyles} variant='permanent'>
-      <Flex
-        alignCenter
-        column
-        gap={2}
-        justifyCenter
-        sx={{
-          pt: 4,
-          pb: 3.5,
-          px: { xs: 1, md: 2 },
-        }}
-      >
-        <Image alt='logo' height={38} src={logo} />
-        <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
-          {matches ? (
-            'TW'
-          ) : (
-            <>
-              Transcript
-              <br />
-              Wizard
-            </>
-          )}
-        </Typography>
-      </Flex>
+      <Fade appear in>
+        <Flex
+          alignCenter
+          column
+          gap={2}
+          justifyCenter
+          sx={{
+            pt: 4,
+            pb: 3.5,
+            px: { xs: 1, md: 2 },
+          }}
+        >
+          <Image
+            alt='logo'
+            height={38}
+            src={logo}
+            style={{
+              filter: theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : undefined,
+            }}
+          />
+          <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
+            {matches ? (
+              'TW'
+            ) : (
+              <>
+                Transcript
+                <br />
+                Wizard
+              </>
+            )}
+          </Typography>
+        </Flex>
+      </Fade>
+
       <Tabs
         aria-label='tabs'
         indicatorColor='secondary'
@@ -124,6 +138,15 @@ export const Sidebar: FunctionComponent = memo(() => {
       </Tabs>
 
       <Flex column gap={1} mb={2} mt='auto' p={{ xs: 1, md: 2 }}>
+        <FlexButton alignCenter disableTouchRipple justifyCenter mb={1} onClick={toggleColorMode}>
+          <SidebarItem
+            icon={theme.palette.mode === 'dark' ? Moon : Sun1}
+            iconSize='2.8rem'
+            isIconOnly
+            label={t('toggle_theme_mode')}
+          />
+        </FlexButton>
+
         <FlexButton disableTouchRipple>
           <SidebarItem label={t('notifications')}>
             <Badge color='error' overlap='circular' variant='dot'>

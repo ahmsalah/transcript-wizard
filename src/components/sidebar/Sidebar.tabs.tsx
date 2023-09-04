@@ -16,7 +16,7 @@ export type AppTab = BaseTab & {
 export const appTabs: AppTab[] = [
   {
     path: '/',
-    label: 'transcriptions',
+    label: 'transcripts',
     icon: ClipboardText,
     isDisabled: false,
     isEnabled: true,

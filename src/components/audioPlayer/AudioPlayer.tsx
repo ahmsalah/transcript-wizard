@@ -17,7 +17,7 @@ export const AudioPlayer = memo(
         <Box height={120} />
         <Flex
           alignCenter
-          bgcolor='common.white'
+          bgcolor='background.paper'
           bottom={0}
           boxShadow="'0px -1px 1px 0px rgba(0, 0, 0, 0.10)'"
           left={{ xs: 0, sm: drawerWidthSm - 1, md: drawerWidthMd - 2 }}

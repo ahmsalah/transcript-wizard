@@ -10,24 +10,29 @@ type SidebarItemProps = FlexProps & {
   label: string | null | undefined
   icon?: IconProps['icon']
   isSelected?: boolean
+  isIconOnly?: boolean
+  iconSize?: IconProps['size']
 }
 
 export const SidebarItem: FunctionComponent<SidebarItemProps> = memo(
-  ({ label, icon, isSelected, children, sx, ...props }) => {
+  ({ label, icon, isSelected, isIconOnly, iconSize = '2.3rem', children, sx, ...props }) => {
     const isUp900 = useMediaQuery('(min-width:900px)')
 
     return (
-      <Tooltip placement='right' title={isUp900 ? null : label}>
+      <Tooltip
+        placement={isIconOnly && isUp900 ? 'top' : 'right'}
+        title={!isUp900 || isIconOnly ? label : null}
+      >
         <Flex
           alignCenter
           gap={2}
           {...props}
           sx={{
             borderRadius: 2,
-            width: 1,
-            justifyContent: { xs: 'center', md: 'flex-start' },
+            width: isIconOnly ? undefined : 1,
+            justifyContent: { xs: 'center', md: isIconOnly ? 'center' : 'flex-start' },
             py: 1.5,
-            px: { xs: 0, md: 3 },
+            px: isIconOnly ? 1.5 : { xs: 0, md: 3 },
             transition: 'opacity 0.2s',
             zIndex: 1,
             color: 'inherit',
@@ -37,10 +42,6 @@ export const SidebarItem: FunctionComponent<SidebarItemProps> = memo(
               opacity: 1,
               bgcolor: 'action.hover',
             },
-            '&& svg': {
-              fontSize: '2.2rem',
-              mb: 0,
-            },
             ...(isSelected && {
               color: 'primary.onContainer',
               opacity: 1,
@@ -49,13 +50,12 @@ export const SidebarItem: FunctionComponent<SidebarItemProps> = memo(
           }}
         >
           {children}
-          {icon != null && <Icon icon={icon} size='2.2rem' />}
-          {!!label && (
+          {icon != null && <Icon icon={icon} size={iconSize} />}
+          {!!label && !isIconOnly && (
             <Typography
               fontWeight='600'
               sx={{ display: { xs: 'none', md: 'block' } }}
               textTransform='none'
-              // whiteSpace='pre-line'
             >
               {label}
             </Typography>

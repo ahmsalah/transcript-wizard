@@ -7,10 +7,10 @@
 
 import type { Components } from '@mui/material/styles/components'
 import { mixins } from './mixins'
-import { palette } from './palette'
+import { getPalette } from './palette'
 import { fonts } from './fonts'
 
-export const components: Components = {
+export const getComponents = (mode: 'light' | 'dark'): Components => ({
   // Name of the component
   MuiButton: {
     // defaultProps: {
@@ -30,7 +30,7 @@ export const components: Components = {
   MuiOutlinedInput: {
     styleOverrides: {
       notchedOutline: {
-        borderColor: 'rgba(0, 0, 0, 0.12)',
+        borderColor: mode === 'light' ? 'rgba(0, 0, 0, 0.12)' : undefined,
       },
       input: {
         paddingBlock: '14.5px',
@@ -61,18 +61,18 @@ export const components: Components = {
     },
     styleOverrides: {
       tooltip: {
-        backgroundColor: palette.background?.dark,
+        backgroundColor: getPalette(mode).background?.dark,
         fontWeight: 'bold',
       },
       arrow: {
-        color: palette.background?.dark,
+        color: getPalette('light').background?.dark,
       },
     },
   },
   MuiBadge: {
     styleOverrides: {
       dot: {
-        boxShadow: `0 0 0 2px ${palette.background?.paper || ''}`,
+        boxShadow: `0 0 0 2px ${getPalette(mode).background?.paper || ''}`,
       },
     },
   },
@@ -140,4 +140,4 @@ export const components: Components = {
     }
     `,
   },
-}
+})

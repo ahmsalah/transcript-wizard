@@ -1,18 +1,44 @@
 'use client'
-import * as React from 'react'
-import { ThemeProvider } from '@mui/material/styles'
+import type { FunctionComponent, PropsWithChildren } from 'react'
+import { createContext, useState, useMemo, useContext } from 'react'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import NextAppDirEmotionCacheProvider from './EmotionCache'
-import { theme } from './theme'
+import { getTheme } from './theme'
 
-export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
+const ToggleThemeContext = createContext({
+  toggleColorMode: () => {
+    console.warn('toggleColorMode is not implemented')
+  },
+})
+
+export const useToggleThemeContext = () => {
+  return useContext(ToggleThemeContext)
+}
+
+export const ThemeRegistry: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  const [mode, setMode] = useState<'light' | 'dark'>('light')
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
+      },
+    }),
+    [],
+  )
+
+  const theme = useMemo(() => createTheme(getTheme(mode)), [mode])
+
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+      <ToggleThemeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </ToggleThemeContext.Provider>
     </NextAppDirEmotionCacheProvider>
   )
 }

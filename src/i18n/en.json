@@ -11,7 +11,8 @@
   "notifications": "Notifications",
   "podcasts": "Podcasts",
   "audio": "Audio",
-  "transcriptions": "Transcriptions",
+  "transcripts": "Transcripts",
   "media": "Media",
-  "profile": "Profile"
+  "profile": "Profile",
+  "toggle_theme_mode": "Toggle Theme Mode"
 }
