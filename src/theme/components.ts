@@ -8,7 +8,6 @@
 import type { Components } from '@mui/material/styles/components'
 import { mixins } from './mixins'
 import { getPalette } from './palette'
-import { fonts } from './fonts'
 
 export const getComponents = (mode: 'light' | 'dark'): Components => ({
   // Name of the component
@@ -120,7 +119,6 @@ export const getComponents = (mode: 'light' | 'dark'): Components => ({
   },
   MuiCssBaseline: {
     styleOverrides: `
-    ${fonts}
     html {
       font-size: 62%;
     }

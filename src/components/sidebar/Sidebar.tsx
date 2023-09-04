@@ -8,7 +8,7 @@ import { Moon, Notification as NotificationIcon, Sun1 } from 'iconsax-react'
 import Image from 'next/image'
 import { useI18n } from '@/i18n'
 import logo from '@/assets/images/logo.png'
-import { useToggleThemeContext } from '@/theme'
+import { nothingYouCouldDoFont, useToggleThemeContext } from '@/theme'
 import { Flex, FlexButton } from '../box'
 import { Icon } from '../icon'
 import { SidebarItem } from './SidebarItem'
@@ -102,7 +102,11 @@ export const Sidebar: FunctionComponent = memo(() => {
               filter: theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : undefined,
             }}
           />
-          <Typography fontFamily="'Nothing You Could Do', Manrope" fontWeight='bold' variant='h3'>
+          <Typography
+            fontFamily={nothingYouCouldDoFont.style.fontFamily}
+            fontWeight='bold'
+            variant='h3'
+          >
             {matches ? (
               'TW'
             ) : (

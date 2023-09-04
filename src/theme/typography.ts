@@ -5,19 +5,14 @@
  * Default theme typography values provided by MUI
  * https://mui.com/material-ui/customization/default-theme/?expand-path=$.typography
  */
-import { Manrope } from 'next/font/google'
+
 import type { TypographyOptions } from '@mui/material/styles/createTypography'
+import { manropeFont } from './fonts'
 
 declare module '@mui/material/styles/createTypography' {}
 
-const manrope = Manrope({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
-  display: 'swap',
-})
-
 export const typography: TypographyOptions = {
-  fontFamily: manrope.style.fontFamily,
+  fontFamily: manropeFont.style.fontFamily,
   htmlFontSize: 10,
   h1: {
     fontSize: '2.8rem',
