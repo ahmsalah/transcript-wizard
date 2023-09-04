@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Type checking
+      run: yarn tsc
+
+    - name: Run lint
+      run: yarn lint
+
+    - name: Run tests
+      run: yarn test:ci
+
+    - name: Generate and publish coverage
+      run: yarn coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
