@@ -95,7 +95,7 @@ export const Sidebar: FunctionComponent = memo(() => {
       >
         <Image
           alt='logo'
-          height={38}
+          height={matches ? 24 : 38}
           src={logo}
           style={{
             filter: theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : undefined,

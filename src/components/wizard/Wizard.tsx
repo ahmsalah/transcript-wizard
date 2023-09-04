@@ -104,7 +104,7 @@ export const Wizard: FunctionComponent<WizardProps> = memo(
             position: 'fixed',
             right: { xs: '5%', sm: '4%', lg: '5%', xl: '10%' },
             bottom: { xs: 120, lg: '36%' },
-            zIndex: 2,
+            zIndex: 2000,
             left: { xs: '5%', sm: 'unset' },
           }}
         >
