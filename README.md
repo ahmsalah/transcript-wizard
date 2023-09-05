@@ -4,7 +4,7 @@
 
 ## Live Demo
 
-Try out the app through [this link](https://transcript-wizard.vercel.app/).
+Explore the app through [this link](https://transcript-wizard.vercel.app/).
 
 ## Description
 
@@ -12,16 +12,14 @@ Transcript Wizard is a platform that identifies uncertain words in audio transcr
 
 ## Features
 
-- An effortless navigation experience facilitated by a wizard, guiding you through all the words that need corrections with the ability to play the audio for the highlighted word.
-- The wizard is draggable, allowing you to move it around the interface according to your convenience.
-- Seamless audio navigation between transcript utterances.
-- The app is mobile-friendly and fully responsive, adapting seamlessly to various viewport widths.
-- Unit Tests and Code Coverage: Comprehensive unit tests for utilities ensure code quality. You can review the code coverage reporting by visiting [this link](https://coveralls.io/github/ahmsalah/transcript-wizard?branch=main).
-- Dark Mode: Theming, featuring a toggle between light and dark modes for a personalized and viewing experience and eye comfort.
-- Accessibility: The entire app is designed for accessibility and keyboard usability, with a special focus on enhancing the usability of forms.
-- Micro Animations that add subtle visual cues, enhancing user interactions and providing a polished user experience.
-- The majority of the app's logic is developed in isolation, entirely separated from the UI, encapsulated within pure functions that offer ease of testing, maintenance and modularity.
-- Unit Tests and Code Coverage: Thorough unit testing is applied to the aforementioned functions. You can explore the code coverage reporting by following this link.
+- **Transcript Wizard**: An effortless navigation experience facilitated by a wizard, guiding you through all the words that need corrections while providing audio playback for the highlighted word. The wizard is draggable, allowing you to move it around the interface according to your convenience.
+- **Audio Navigation**: Seamless audio navigation between transcript utterances, with audio playback triggered by clicking on an utterance.
+- **Responsive Design**: The app is mobile-friendly and fully responsive, adapts to various viewport widths.
+- **Dark Mode**: Theming, featuring a toggle between light and dark modes for a personalized and viewing experience and eye comfort.
+- **Accessibility**: The entire app is designed for accessibility and keyboard usability, with a special focus on enhancing the usability of forms.
+- **Animations**: Micro Animations that add subtle visual cues, enhancing user interactions and providing a polished user experience.
+- **Code Modularity**: The majority of the app's logic is developed in isolation, entirely separated from the UI, encapsulated within pure functions that offer ease of testing, maintenance and modularity.
+- **Unit Tests and Code Coverage**: Thorough unit testing is applied to the aforementioned functions. Review the code coverage report through [this link](https://coveralls.io/github/ahmsalah/transcript-wizard?branch=main).
 
 ## Technologies Used
 
