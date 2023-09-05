@@ -10,13 +10,30 @@ Try out the app through [this link](https://transcript-wizard.vercel.app/).
 
 Transcript Wizard is a platform that identifies uncertain words in audio transcriptions, highlights them, and provides an intuitive user interface for correction.
 
+## Features
+
+- An effortless navigation experience facilitated by a wizard, guiding you through all the words that need corrections with the ability to play the audio for the highlighted word.
+- The wizard is draggable, allowing you to move it around the interface according to your convenience.
+- Seamless audio navigation between transcript utterances.
+- The app is mobile-friendly and fully responsive, adapting seamlessly to various viewport widths.
+- Unit Tests and Code Coverage: Comprehensive unit tests for utilities ensure code quality. You can review the code coverage reporting by visiting [this link](https://coveralls.io/github/ahmsalah/transcript-wizard?branch=main).
+- Dark Mode: Theming, featuring a toggle between light and dark modes for a personalized and viewing experience and eye comfort.
+- Accessibility: The entire app is designed for accessibility and keyboard usability, with a special focus on enhancing the usability of forms.
+- Micro Animations that add subtle visual cues, enhancing user interactions and providing a polished user experience.
+- The majority of the app's logic is developed in isolation, entirely separated from the UI, encapsulated within pure functions that offer ease of testing, maintenance and modularity.
+- Unit Tests and Code Coverage: Thorough unit testing is applied to the aforementioned functions. You can explore the code coverage reporting by following this link.
+
 ## Technologies Used
 
 - TypeScript
 - Next.js 13 with App router
-- Emotion for styling
 - MUI
+- Emotion for styling
 - Jest for testing
+
+## Structure
+
+<img width="2080" alt="Transcript Wizard Structure" src="https://github.com/ahmsalah/transcript-wizard/assets/50025978/767325bc-6f45-4c31-9bc9-fb327c5b837b">
 
 ## Installation
 
