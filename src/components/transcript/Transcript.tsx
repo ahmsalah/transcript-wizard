@@ -1,7 +1,7 @@
 'use client'
 import type { FunctionComponent } from 'react'
 import { memo } from 'react'
-import { Fade } from '@mui/material'
+import { Box, Fade } from '@mui/material'
 import { useTranscriptAudio, useTranscriptUtterances } from '@/hooks'
 import type { Utterance } from '@/types/Utterance'
 import { Flex } from '../box'
@@ -27,9 +27,12 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
       selectedWordRef,
       onSaveWord,
       lowConfidenceWordsCount,
+      highlightedUtteranceIndex,
+      highlightedUtteranceRef,
     } = useTranscriptUtterances({
       utterancesBase,
       setAudioTime,
+      audioRef,
     })
 
     return (
@@ -50,18 +53,23 @@ export const Transcript: FunctionComponent<TranscriptProps> = memo(
 
         <Fade in={!isLoading} timeout={500}>
           <Flex column gap={2}>
-            {utterances.map((utterance, index) => (
-              <UtteranceItem
-                key={utterance.id}
-                {...utterance}
-                onPlayAtTime={onPlayAtTime}
-                onSelectWord={onSelectWord}
-                ref={selectedWordRef}
-                selectedUtteranceIndex={selected.utteranceIndex}
-                selectedWordIndex={selected.wordIndex}
-                utteranceIndex={index}
-              />
-            ))}
+            {utterances.map((utterance, index) => {
+              const isHighlighted = highlightedUtteranceIndex === index
+              return (
+                <Box key={utterance.id} ref={isHighlighted ? highlightedUtteranceRef : null}>
+                  <UtteranceItem
+                    {...utterance}
+                    isHighlighted={isHighlighted}
+                    onPlayAtTime={onPlayAtTime}
+                    onSelectWord={onSelectWord}
+                    ref={selectedWordRef}
+                    selectedUtteranceIndex={selected.utteranceIndex}
+                    selectedWordIndex={selected.wordIndex}
+                    utteranceIndex={index}
+                  />
+                </Box>
+              )
+            })}
           </Flex>
         </Fade>
         <AudioPlayer

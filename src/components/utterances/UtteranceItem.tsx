@@ -9,6 +9,7 @@ import { getConfidenceProps } from './utils'
 
 type UtteranceItemProps = Utterance & {
   onPlayAtTime: (timeInSeconds: number) => void
+  isHighlighted: boolean
   utteranceIndex: number
   selectedUtteranceIndex: number
   selectedWordIndex: number
@@ -23,6 +24,7 @@ export const UtteranceItem = memo(
         start,
         onPlayAtTime,
         utteranceIndex,
+        isHighlighted,
         selectedUtteranceIndex,
         selectedWordIndex,
         onSelectWord,
@@ -39,6 +41,7 @@ export const UtteranceItem = memo(
           }}
           sx={{
             transition: 'background-color 150ms',
+            bgcolor: isHighlighted ? 'action.hover' : 'transparent',
             '&:hover, &:focus': {
               backgroundColor: 'action.hover',
             },

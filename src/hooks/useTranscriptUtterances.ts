@@ -1,4 +1,5 @@
 'use client'
+import type { MutableRefObject } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useMediaQuery } from '@mui/material'
 import type { Utterance } from '@/types/Utterance'
@@ -25,16 +26,20 @@ export type OnSaveWord = (params: OnSaveWordParams) => void
 type UseTranscriptUtterancesParams = {
   utterancesBase: Utterance[]
   setAudioTime: (timeInSeconds: number) => void
+  audioRef: MutableRefObject<HTMLAudioElement | null>
 }
 
 export const useTranscriptUtterances = ({
   utterancesBase,
   setAudioTime,
+  audioRef,
 }: UseTranscriptUtterancesParams) => {
   const isUp900 = useMediaQuery('(min-width:900px)')
   const selectedWordRef = useRef<HTMLDivElement | null>(null)
+  const highlightedUtteranceRef = useRef<HTMLDivElement | null>(null)
   const [utterances, setUtterances] = useState(utterancesBase)
   const [isLoading, setIsLoading] = useState(true)
+  const [highlightedUtteranceIndex, setHighlightedUtteranceIndex] = useState(0)
   const [selected, setSelected] = useState<{
     utteranceIndex: number
     wordIndex: number
@@ -139,6 +144,55 @@ export const useTranscriptUtterances = ({
     }
   }, [selectedWord, isUp900])
 
+  useEffect(() => {
+    // set highlighted utterance index based on the current time
+    const audioElement = audioRef.current
+
+    const handleTimeUpdate = () => {
+      if (audioElement) {
+        // Get the current time from the audio element
+        const { currentTime } = audioElement
+        const highlightedUtterance = utterances[highlightedUtteranceIndex]
+
+        // Check if the current time is not within the highlighted utterance's time range to avoid unnecessary loops
+        const isNotWithinRange =
+          currentTime < highlightedUtterance.start || currentTime > highlightedUtterance.end
+
+        if (isNotWithinRange) {
+          // Find the index of the utterance that is currently being played
+          const currentUtteranceIndex = utterances.findIndex(
+            (utterance) => currentTime >= utterance.start && currentTime < utterance.end,
+          )
+
+          // Update the highlighted utterance index if a new utterance is being played
+          if (currentUtteranceIndex !== -1 && currentUtteranceIndex !== highlightedUtteranceIndex) {
+            setHighlightedUtteranceIndex(currentUtteranceIndex)
+          }
+        }
+      }
+    }
+
+    if (audioElement) {
+      audioElement.addEventListener('timeupdate', handleTimeUpdate)
+    }
+
+    return () => {
+      if (audioElement) {
+        audioElement.removeEventListener('timeupdate', handleTimeUpdate)
+      }
+    }
+  }, [audioRef, highlightedUtteranceIndex, utterances])
+
+  useEffect(() => {
+    if (highlightedUtteranceRef.current) {
+      // auto scroll the highlighted utterance into view
+      highlightedUtteranceRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: isUp900 ? 'center' : 'start',
+      })
+    }
+  }, [highlightedUtteranceIndex, isUp900])
+
   return {
     onSelectWord,
     onSaveWord,
@@ -149,5 +203,7 @@ export const useTranscriptUtterances = ({
     utterances,
     isLoading,
     lowConfidenceWordsCount,
+    highlightedUtteranceIndex,
+    highlightedUtteranceRef,
   }
 }
