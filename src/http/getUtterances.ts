@@ -10,7 +10,7 @@ type GetUtterancesResponse = {
 
 export async function getUtterances(): Promise<Utterance[]> {
   const { results } = await http.get<GetUtterancesResponse>(
-    'https://file.notion.so/f/f/f993230d-8957-44db-a873-af2f26d2d410/7c6a54bf-0fb4-4227-bbb5-2ac73109891d/sample_transcription.json?id=98ba3547-1ce6-461c-993b-a595bd51b59d&table=block&spaceId=f993230d-8957-44db-a873-af2f26d2d410&expirationTimestamp=1693879200000&signature=nRqqmaLIT5Hian_rjvhqJ9UY-KNDnr1NZBSFLXY6QfM&downloadName=sample_transcription.json',
+    'https://file.notion.so/f/f/f993230d-8957-44db-a873-af2f26d2d410/082e3195-a004-453f-8b35-2ade9fcc7ff5/sample_transcription.json?id=4a369ace-a984-4d3c-b59f-f38d15aac4f8&table=block&spaceId=f993230d-8957-44db-a873-af2f26d2d410&expirationTimestamp=1694044800000&signature=7Kt8VLN36FmuCilOJGb4mmnqp5ZCmpWUjiSiLNehOH8&downloadName=sample_transcription.json',
   )
 
   return mergeUtterances(results.utterances)
