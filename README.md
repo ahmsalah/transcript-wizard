@@ -39,7 +39,7 @@ Make sure you have Node.js and Yarn installed, then run the following commands:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/transcript-wizard.git
+git clone https://github.com/ahmsalah/transcript-wizard.git
 
 # Navigate into the project directory
 cd transcript-wizard
